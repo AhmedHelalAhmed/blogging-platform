@@ -25,7 +25,7 @@ class PostController extends Controller
     public function store(PostService $service, PostRequest $request)
     {
         $data = $request->validated();
-        $status = $service->store(array_merge($data, ['user_id' => auth()->id()]));
+        $status = $service->store(array_merge($data, ['user_id' => auth()->id(), 'published_at' => now()]));
         if (!$status) {
             Log::error('Can not create a post with data', ['data' => $data]);
         }

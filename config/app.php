@@ -212,4 +212,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+
+    'feed' => env('feed_url', 'https://candidate-test.sq1.io/api.php')
+
 ];
