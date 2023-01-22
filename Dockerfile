@@ -28,8 +28,6 @@ ENV NODE_PATH $NVM_INSTALL_PATH/lib/node_modules
 ENV PATH $NVM_INSTALL_PATH/bin:$PATH
 RUN npm -v
 RUN node -v
-RUN npm install
-RUN npm run build
 
 
 
