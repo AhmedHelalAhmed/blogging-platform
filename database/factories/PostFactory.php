@@ -18,7 +18,7 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->word(),
+            'title' => fake()->slug(3),
             'description' => fake()->paragraph(10),
             'published_at' => now(),
             'user_id' => User::factory()->create()->id
