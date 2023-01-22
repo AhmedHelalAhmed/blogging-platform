@@ -45,7 +45,7 @@ const isSelected = (value, optionValue) => {
         </div>
 
         <div>
-            <form method="GET">
+            <form method="GET" v-if="posts.data.length">
                 <label for="sort-by" class="block mt-2 text-sm font-medium text-gray-900 dark:text-white ">
                     Sort by publication date:
                 </label>

@@ -12,13 +12,14 @@ class PostService
      */
     public function getAll(array $filters)
     {
-        return Post::when($filters['sort']['published_at'] ?? SortByPublicationDate::OLD_TO_NEW->value, function ($query, $direction) {
-            $query->sortByPublishedAt($direction);
-        })
+        return Post::select(['title', 'description', 'published_at'])
+            ->when($filters['sort']['published_at'] ?? SortByPublicationDate::OLD_TO_NEW->value, function ($query, $direction) {
+                $query->sortByPublishedAt($direction);
+            })
             ->when($filters['filter']['authorId'] ?? SortByPublicationDate::OLD_TO_NEW->value, function ($query, $authorId) {
                 $query->author($authorId);
             })
-            ->paginate(10)
+            ->paginate(Post::PAGE_SIZE)
             ->withQueryString();
     }
 

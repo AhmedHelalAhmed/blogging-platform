@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 
 class Post extends Model
 {
+    const PAGE_SIZE = 10;
     use HasFactory;
 
     /**
@@ -58,7 +59,7 @@ class Post extends Model
      * @param Collection $externalIds
      * @return array
      */
-    public static function getImportedPosts(Collection $externalIds):array
+    public static function getImportedPosts(Collection $externalIds): array
     {
         return self::whereIn('external_id', $externalIds)->pluck('external_id')->toArray();
     }

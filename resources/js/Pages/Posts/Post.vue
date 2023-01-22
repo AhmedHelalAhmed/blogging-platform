@@ -3,7 +3,7 @@ defineProps(['title', 'description', 'publishedAt']);
 </script>
 
 <template>
-    <article class="w-[70rem]">
+    <article class="w-[60rem]">
         <div class="border shadow-lg mt-8 py-1 px-4 border 2xl:shadow-md">
             <div>
                 <h2 class="mb-3 uppercase border-black-600 shadow-sm">

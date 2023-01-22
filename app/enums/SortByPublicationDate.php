@@ -13,7 +13,7 @@ enum SortByPublicationDate: int
      */
     public static function changeValueToDirection(int $value)
     {
-        if ($value === self::OLD_TO_NEW->value) {
+        if ($value === self::NEW_TO_OLD->value) {
             return "desc";
         }
 
