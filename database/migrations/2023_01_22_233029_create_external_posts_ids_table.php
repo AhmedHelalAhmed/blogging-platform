@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedInteger('external_id')->nullable()->index();
+        Schema::create('external_posts_ids', function (Blueprint $table) {
+            $table->unsignedBigInteger('external_id')->index();
         });
     }
 
@@ -25,8 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('external_id');
-        });
+        Schema::dropIfExists('external_posts_ids');
     }
 };

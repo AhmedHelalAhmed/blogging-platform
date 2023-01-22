@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\ExternalPostsIds;
 use App\Models\Post;
 use App\Transformer\PostAPITransformer;
 use Illuminate\Support\Facades\Http;
@@ -15,14 +16,18 @@ class PostImportingService
         if ($posts->isEmpty()) {
             return;
         }
-        $existsPosts = Post::getImportedPosts($posts->pluck('id'));
+        $existsPosts = ExternalPostsIds::getByIds($posts->pluck('id'));
         $newPosts = $posts->filter(function ($post) use ($existsPosts) {
-            return !in_array($post['id'],$existsPosts);
-        })->map(function ($post) {
-            return PostAPITransformer::transform($post);
+            return !in_array($post['id'], $existsPosts);
         });
+
         if ($newPosts->isNotEmpty()) {
-            Post::insert($newPosts->toArray());
+            Post::insert($newPosts->map(function ($post) {
+                return PostAPITransformer::transform($post);
+            })->toArray());
+            ExternalPostsIds::insert($newPosts->map(function ($post) {
+                return ['external_id' => $post['id']];
+            })->toArray());
         }
     }
 

@@ -11,7 +11,6 @@ class PostAPITransformer
     public static function transform($post)
     {
         return [
-            'external_id' => $post['id'],
             'title' => $post['title'],
             'description' => $post['description'],
             'published_at' => Carbon::parse($post['publishedAt']),
