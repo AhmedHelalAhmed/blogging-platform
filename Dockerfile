@@ -29,13 +29,9 @@ ENV PATH $NVM_INSTALL_PATH/bin:$PATH
 RUN npm -v
 RUN node -v
 
-
-
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
 COPY default.conf /etc/apache2/sites-enabled/000-default.conf
-COPY app/scripts/entrypoint.sh /opt/bin/entrypoint.sh
-RUN chmod +x /opt/bin/entrypoint.sh
 
 ARG user
 ARG uid

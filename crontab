@@ -1,0 +1,2 @@
+* * * * * cd /var/www/project && php artisan schedule:run >> /dev/stdout 2>&1
+

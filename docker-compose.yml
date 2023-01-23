@@ -40,3 +40,10 @@ services:
             PMA_PORT: 3306
             PMA_USER: root
             PMA_PASSWORD: root
+    cron:
+        container_name: ${DOCKER_NAME}_cron
+        build:
+            context: .
+            dockerfile: cron.dockerfile
+        volumes:
+            - ./:/var/www/project
