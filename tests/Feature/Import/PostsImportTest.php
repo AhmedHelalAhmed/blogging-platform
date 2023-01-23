@@ -3,6 +3,7 @@
 namespace Tests\Feature\Import;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Services\PostImportingService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -44,7 +45,8 @@ class PostsImportTest extends TestCase
             $this->assertDatabaseHas('posts', [
                 'title' => $post["title"],
                 'description' => $post["description"],
-                'published_at' => Carbon::parse($post["publishedAt"])
+                'published_at' => Carbon::parse($post["publishedAt"]),
+                'user_id' => User::ADMIN_USER_ID
             ]);
         }
 

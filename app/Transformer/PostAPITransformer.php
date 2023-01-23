@@ -2,11 +2,11 @@
 
 namespace App\Transformer;
 
+use App\Models\User;
 use Carbon\Carbon;
 
 class PostAPITransformer
 {
-    const ADMIN_USER_ID = 1;
 
     public static function transform($post)
     {
@@ -16,7 +16,7 @@ class PostAPITransformer
             'published_at' => Carbon::parse($post['publishedAt']),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'user_id' => self::ADMIN_USER_ID
+            'user_id' => User::ADMIN_USER_ID
         ];
     }
 }
