@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description');
             $table->foreignIdFor(User::class);
-            $table->timestamp('published_at')->index();
+            $table->timestamp('published_at')->useCurrent()->index();
             $table->timestamps();
         });
     }
