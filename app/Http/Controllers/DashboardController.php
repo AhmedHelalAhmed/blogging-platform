@@ -20,7 +20,7 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard', [
             'posts' => $this->service->getAll(['filter'=>[
                 'authorId'=> auth()->id()
-            ]])
+            ]],$request->input('page', 1))
         ]);
     }
 }

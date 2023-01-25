@@ -1,8 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head,Link } from '@inertiajs/vue3';
+import {Head, Link} from '@inertiajs/vue3';
 import Post from '@/Pages/Posts/Post.vue';
 import Pagination from '@/Components/Pagination.vue';
+
 defineProps({
     posts: Object,
 });
@@ -16,7 +17,7 @@ defineProps({
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
         </template>
 
-        <div class="py-12">
+        <div :class="{'py-12': !$page.props.flash.message&&!$page.props.flash.error}">
 
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 

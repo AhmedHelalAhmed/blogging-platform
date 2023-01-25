@@ -18,8 +18,10 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->longText('description');
-            $table->foreignIdFor(User::class);
-            $table->timestamp('published_at')->useCurrent()->index();
+            $table->foreignIdFor(User::class)
+                ->comment('the author id of the post');
+            $table->timestamp('published_at')->useCurrent()->index()
+                ->comment('This is the timestamp where the post published and equal the created_at for the posts that created from system UI');
             $table->timestamps();
         });
     }

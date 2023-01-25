@@ -43,39 +43,41 @@ const isSelected = (value, optionValue) => {
                 >
             </template>
         </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="w-[70rem] p-6  bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <form method="GET" v-if="posts.data.length">
+                    <label for="sort-by" class="block mt-2 text-sm font-medium text-gray-900 dark:text-white ">
+                        Sort by publication date:
+                    </label>
+                    <div class="flex">
+                        <select
+                            name="sort[published_at]"
+                            id="sort-by"
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option v-for="option in optionsForSort" :key="option.value" :value="option.value"
+                                    :selected="isSelected(sortByPublicationDate,option.value)">{{ option.text }}
+                            </option>
+                        </select>
 
-        <div>
-            <form method="GET" v-if="posts.data.length">
-                <label for="sort-by" class="block mt-2 text-sm font-medium text-gray-900 dark:text-white ">
-                    Sort by publication date:
-                </label>
-                <div class="flex">
-                    <select
-                        name="sort[published_at]"
-                        id="sort-by"
-                        class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option v-for="option in optionsForSort" :key="option.value" :value="option.value"
-                                :selected="isSelected(sortByPublicationDate,option.value)">{{ option.text }}
-                        </option>
-                    </select>
+                        <button type="submit"
+                                class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                            Sort
+                        </button>
 
-                    <button type="submit"
-                            class="ml-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Sort
-                    </button>
+                    </div>
 
+                </form>
+                <div v-for="post in posts.data" :key="post.id">
+                    <Post
+                        :title="post.title"
+                        :description="post.description"
+                        :published-at="post.published_at"/>
                 </div>
-
-            </form>
-            <div v-for="post in posts.data" :key="post.id">
-                <Post
-                    :title="post.title"
-                    :description="post.description"
-                    :published-at="post.published_at"/>
+                <div v-if="!posts.data.length" class="mt-6 border shadow-lg py-10 px-4 font-bold text-center">
+                    No posts to show
+                </div>
+                <Pagination :data="posts"/>
             </div>
-            <div v-if="!posts.data.length" class="mt-6 border shadow-lg py-10 px-4 font-bold text-center">
-                No posts to show
-            </div>
-            <Pagination :data="posts"/>
         </div>
     </div>
 </template>

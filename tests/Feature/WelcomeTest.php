@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\enums\SortByPublicationDate;
+use App\enums\SortByPublicationDateEnum;
 use App\Models\Post;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -78,7 +78,7 @@ class WelcomeTest extends TestCase
 
         $this->get($url . '?' . http_build_query([
                 'sort' => [
-                    'published_at' => SortByPublicationDate::NEW_TO_OLD->value
+                    'published_at' => SortByPublicationDateEnum::NEW_TO_OLD->value
                 ]
             ]))
             ->assertOk()
@@ -103,7 +103,7 @@ class WelcomeTest extends TestCase
 
         $this->get($url . '?' . http_build_query([
                 'sort' => [
-                    'published_at' => SortByPublicationDate::OLD_TO_NEW->value
+                    'published_at' => SortByPublicationDateEnum::OLD_TO_NEW->value
                 ]
             ]))
             ->assertOk()
@@ -141,7 +141,7 @@ class WelcomeTest extends TestCase
 
         $this->get($url . '?' . http_build_query([
                 'sort' => [
-                    'published_at' => SortByPublicationDate::NEW_TO_OLD->value
+                    'published_at' => SortByPublicationDateEnum::NEW_TO_OLD->value
                 ]
             ]))
             ->assertOk()
@@ -160,7 +160,7 @@ class WelcomeTest extends TestCase
         $this->get($url . '?' . http_build_query([
                 'page' => 2,
                 'sort' => [
-                    'published_at' => SortByPublicationDate::NEW_TO_OLD->value
+                    'published_at' => SortByPublicationDateEnum::NEW_TO_OLD->value
                 ]
             ]))
             ->assertOk()

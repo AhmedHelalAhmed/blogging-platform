@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('external_posts_ids', function (Blueprint $table) {
-            $table->unsignedBigInteger('external_id')->index();
+            $table->unsignedBigInteger('external_id')
+                ->index()
+                ->comment('This is the external id of the post that comes in the payload that is imported from external API I stored it to identify which posts that already synced to the system and prevent duplication');
         });
     }
 

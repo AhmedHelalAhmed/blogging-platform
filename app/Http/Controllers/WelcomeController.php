@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\enums\SortByPublicationDate;
+use App\enums\SortByPublicationDateEnum;
 use App\Http\Requests\WelcomeRequest;
 use App\Services\PostService;
 use Illuminate\Support\Facades\Route;
@@ -29,9 +29,9 @@ class WelcomeController extends Controller
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'posts' => $this->service->getAll($request->validated()),
+            'posts' => $this->service->getAll($request->validated(), $request->input('page', 1)),
             'sortByPublicationDate' => $request->input('sort.published_at'),
-            'optionsForSort' => SortByPublicationDate::getOptions()
+            'optionsForSort' => SortByPublicationDateEnum::getOptions()
         ]);
     }
 }

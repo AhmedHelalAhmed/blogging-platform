@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\enums\DefaultMessageEnum;
 use App\Http\Requests\PostRequest;
 use App\Services\PostService;
 use Illuminate\Support\Facades\Log;
@@ -29,6 +30,6 @@ class PostController extends Controller
         if (!$status) {
             Log::error('Can not create a post with data', ['data' => $data]);
         }
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('message', DefaultMessageEnum::SUCCESS_MESSAGE);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\enums;
 
-enum SortByPublicationDate: int
+enum SortByPublicationDateEnum: int
 {
     case OLD_TO_NEW = 0;
     case NEW_TO_OLD = 1;

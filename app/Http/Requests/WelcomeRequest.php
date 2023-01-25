@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\enums\SortByPublicationDate;
+use App\enums\SortByPublicationDateEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -28,7 +28,7 @@ class WelcomeRequest extends FormRequest
         return [
             'sort.published_at' => [
                 'nullable',
-                Rule::in([SortByPublicationDate::OLD_TO_NEW->value, SortByPublicationDate::NEW_TO_OLD->value]),
+                Rule::in([SortByPublicationDateEnum::OLD_TO_NEW->value, SortByPublicationDateEnum::NEW_TO_OLD->value]),
             ]
         ];
     }

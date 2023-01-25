@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\enums\SortByPublicationDate;
+use App\enums\SortByPublicationDateEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,7 +41,7 @@ class Post extends Model
      */
     public function scopeSortByPublishedAt(Builder $query, int $value)
     {
-        $query->orderBy('published_at', SortByPublicationDate::changeValueToDirection($value));
+        $query->orderBy('published_at', SortByPublicationDateEnum::changeValueToDirection($value));
     }
 
     /**
