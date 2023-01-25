@@ -12,7 +12,9 @@ class CreatePostTest extends TestCase
     use LazilyRefreshDatabase;
 
     const CREATE_POST_PAGE_NAME = 'posts.create';
+
     const STORE_POST_PAGE_NAME = 'posts.store';
+
     const DASHBOARD_PAGE_NAME = 'dashboard';
 
     /**
@@ -39,7 +41,7 @@ class CreatePostTest extends TestCase
         $this->actingAs($user);
         $this->get(route(self::CREATE_POST_PAGE_NAME))
             ->assertOk()
-            ->assertInertia(fn($page) => $page->component('Posts/Create'));
+            ->assertInertia(fn ($page) => $page->component('Posts/Create'));
         $post = Post::factory()->make();
         $this->post(route(self::STORE_POST_PAGE_NAME), $post->toArray())
             ->assertRedirectContains(self::DASHBOARD_PAGE_NAME);
@@ -58,7 +60,7 @@ class CreatePostTest extends TestCase
             ->assertSessionHasErrors(
                 [
                     'title' => 'The title field is required.',
-                    'description' => 'The description field is required.'
+                    'description' => 'The description field is required.',
                 ]
             );
 
@@ -68,7 +70,7 @@ class CreatePostTest extends TestCase
             ->assertSessionHasErrors(
                 [
                     'title' => 'The title must be between 3 and 255 characters.',
-                    'description' => 'The description must be between 30 and 600 characters.'
+                    'description' => 'The description must be between 30 and 600 characters.',
                 ]
             );
     }

@@ -15,6 +15,7 @@ class PostImportingService
 {
     /**
      * @return void
+     *
      * @throws \Exception
      */
     public function __invoke()
@@ -25,7 +26,7 @@ class PostImportingService
         }
         $existsPosts = ExternalPostsIds::getByIds($posts->pluck('id'));
         $newPosts = $posts->filter(function ($post) use ($existsPosts) {
-            return !in_array($post['id'], $existsPosts);
+            return ! in_array($post['id'], $existsPosts);
         });
 
         if ($newPosts->isNotEmpty()) {
@@ -47,10 +48,10 @@ class PostImportingService
      * Get data from API
      *
      * @return array
-     * @throws \Exception
      *
+     * @throws \Exception
      */
-    public function getFeeds():array
+    public function getFeeds(): array
     {
         $response = Http::get(config('app.feed'));
         if ($response->failed()) {
@@ -60,5 +61,4 @@ class PostImportingService
 
         return $response->json('articles');
     }
-
 }

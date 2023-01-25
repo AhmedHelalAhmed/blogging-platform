@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Collection;
 
 class Post extends Model
 {
     const PAGE_SIZE = 10;
+
     use HasFactory;
 
     /**
@@ -35,8 +35,8 @@ class Post extends Model
     }
 
     /**
-     * @param Builder $query
-     * @param int $value
+     * @param  Builder  $query
+     * @param  int  $value
      * @return void
      */
     public function scopeSortByPublishedAt(Builder $query, int $value)
@@ -45,8 +45,8 @@ class Post extends Model
     }
 
     /**
-     * @param Builder $query
-     * @param int $value
+     * @param  Builder  $query
+     * @param  int  $value
      * @return void
      */
     public function scopeAuthor(Builder $query, int $authorId)

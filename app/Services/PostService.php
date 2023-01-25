@@ -14,7 +14,7 @@ class PostService
     private CachingPostService $cachingPostService;
 
     /**
-     * @param CachingPostService $cachingPostService
+     * @param  CachingPostService  $cachingPostService
      */
     public function __construct(CachingPostService $cachingPostService)
     {
@@ -22,8 +22,8 @@ class PostService
     }
 
     /**
-     * @param array $filters
-     * @param int $pageNumber
+     * @param  array  $filters
+     * @param  int  $pageNumber
      * @return LengthAwarePaginator
      */
     public function getAll(array $filters, int $pageNumber): LengthAwarePaginator
@@ -43,11 +43,13 @@ class PostService
             ->withQueryString();
 
         $this->cachingPostService->cache($posts);
+
         return $posts;
     }
 
     /**
      * This is for store post
+     *
      * @return void
      */
     public function store($data): bool

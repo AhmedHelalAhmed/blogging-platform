@@ -16,17 +16,17 @@ class PostsImportTest extends TestCase
 
     const SAMPLE_DATA_FROM_API_OF_FEED = [
         [
-            "id" => 15,
-            "title" => "Tesla vs. the S&P 500: Which Is the Better First Investment?",
-            "description" => "Choose your first investment with the goal of protecting your money and your investing confidence.",
-            "publishedAt" => "2022-08-31T09:52:00Z"
+            'id' => 15,
+            'title' => 'Tesla vs. the S&P 500: Which Is the Better First Investment?',
+            'description' => 'Choose your first investment with the goal of protecting your money and your investing confidence.',
+            'publishedAt' => '2022-08-31T09:52:00Z',
         ],
         [
-            "id" => 13,
-            "title" => "Climate Crisis Forces China To Ration Electricity",
-            "description" => "Provinces in China are being forced to reduce power consumption as forest fires, droughts, and heatwaves ravage the country. The Guardian reports: here were still some streetlights on the Bund, one of the main roads in central Shanghai. But the decorative lig\u2026",
-            "publishedAt" => "2022-08-31T10:00:00Z"
-        ]
+            'id' => 13,
+            'title' => 'Climate Crisis Forces China To Ration Electricity',
+            'description' => "Provinces in China are being forced to reduce power consumption as forest fires, droughts, and heatwaves ravage the country. The Guardian reports: here were still some streetlights on the Bund, one of the main roads in central Shanghai. But the decorative lig\u2026",
+            'publishedAt' => '2022-08-31T10:00:00Z',
+        ],
     ];
 
     /**
@@ -43,10 +43,10 @@ class PostsImportTest extends TestCase
         $this->simulateSchedulerRun();
         foreach (self::SAMPLE_DATA_FROM_API_OF_FEED as $post) {
             $this->assertDatabaseHas('posts', [
-                'title' => $post["title"],
-                'description' => $post["description"],
-                'published_at' => Carbon::parse($post["publishedAt"]),
-                'user_id' => User::ADMIN_USER_ID
+                'title' => $post['title'],
+                'description' => $post['description'],
+                'published_at' => Carbon::parse($post['publishedAt']),
+                'user_id' => User::ADMIN_USER_ID,
             ]);
         }
 
@@ -70,9 +70,9 @@ class PostsImportTest extends TestCase
         $this->simulateSchedulerRun();
         foreach (self::SAMPLE_DATA_FROM_API_OF_FEED as $post) {
             $this->assertDatabaseHas('posts', [
-                'title' => $post["title"],
-                'description' => $post["description"],
-                'published_at' => Carbon::parse($post["publishedAt"])
+                'title' => $post['title'],
+                'description' => $post['description'],
+                'published_at' => Carbon::parse($post['publishedAt']),
             ]);
         }
 

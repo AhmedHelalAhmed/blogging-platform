@@ -18,9 +18,9 @@ class DashboardController extends Controller
     public function __invoke(WelcomeRequest $request)
     {
         return Inertia::render('Dashboard', [
-            'posts' => $this->service->getAll(['filter'=>[
-                'authorId'=> auth()->id()
-            ]],$request->input('page', 1))
+            'posts' => $this->service->getAll(['filter' => [
+                'authorId' => auth()->id(),
+            ]], $request->input('page', 1)),
         ]);
     }
 }

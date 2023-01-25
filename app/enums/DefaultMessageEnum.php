@@ -2,8 +2,8 @@
 
 namespace App\enums;
 
-enum DefaultMessageEnum:string
+enum DefaultMessageEnum: string
 {
-case SUCCESS_MESSAGE= 'Success action';
-case ERROR_MESSAGE= 'Something went wrong';
+    case SUCCESS_MESSAGE = 'Success action';
+    case ERROR_MESSAGE = 'Something went wrong';
 }

@@ -9,12 +9,13 @@ use Illuminate\Support\Collection;
 class ExternalPostsIds extends Model
 {
     public $timestamps = false;
+
     protected $fillable = ['external_id'];
+
     use HasFactory;
 
-
     /**
-     * @param Collection $externalIds
+     * @param  Collection  $externalIds
      * @return array
      */
     public static function getByIds(Collection $externalIds): array

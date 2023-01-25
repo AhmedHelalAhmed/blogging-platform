@@ -7,7 +7,6 @@ use Carbon\Carbon;
 
 class PostAPITransformer
 {
-
     public static function transform($post)
     {
         return [
@@ -16,7 +15,7 @@ class PostAPITransformer
             'published_at' => Carbon::parse($post['publishedAt']),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'user_id' => User::ADMIN_USER_ID
+            'user_id' => User::ADMIN_USER_ID,
         ];
     }
 }

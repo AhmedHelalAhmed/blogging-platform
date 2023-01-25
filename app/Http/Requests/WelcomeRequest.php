@@ -29,8 +29,7 @@ class WelcomeRequest extends FormRequest
             'sort.published_at' => [
                 'nullable',
                 Rule::in([SortByPublicationDateEnum::OLD_TO_NEW->value, SortByPublicationDateEnum::NEW_TO_OLD->value]),
-            ]
+            ],
         ];
     }
 }
-

@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (!User::count()) {
+        if (! User::count()) {
             User::factory()->create([
                 'name' => 'admin',
                 'email' => 'no-replay@app.com',

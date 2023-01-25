@@ -13,7 +13,7 @@ class WelcomeController extends Controller
     private PostService $service;
 
     /**
-     * @param PostService $service
+     * @param  PostService  $service
      */
     public function __construct(PostService $service)
     {
@@ -21,7 +21,7 @@ class WelcomeController extends Controller
     }
 
     /**
-     * @param WelcomeRequest $request
+     * @param  WelcomeRequest  $request
      * @return \Inertia\Response
      */
     public function __invoke(WelcomeRequest $request)
@@ -31,7 +31,7 @@ class WelcomeController extends Controller
             'canRegister' => Route::has('register'),
             'posts' => $this->service->getAll($request->validated(), $request->input('page', 1)),
             'sortByPublicationDate' => $request->input('sort.published_at'),
-            'optionsForSort' => SortByPublicationDateEnum::getOptions()
+            'optionsForSort' => SortByPublicationDateEnum::getOptions(),
         ]);
     }
 }

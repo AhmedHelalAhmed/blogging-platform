@@ -25,7 +25,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'between:3,255'],
-            'description' => ['required', 'string', 'between:30,600']
+            'description' => ['required', 'string', 'between:30,600'],
         ];
     }
 }

@@ -8,16 +8,16 @@ enum SortByPublicationDateEnum: int
     case NEW_TO_OLD = 1;
 
     /**
-     * @param int $value
+     * @param  int  $value
      * @return string
      */
     public static function changeValueToDirection(int $value)
     {
         if ($value === self::NEW_TO_OLD->value) {
-            return "desc";
+            return 'desc';
         }
 
-        return "asc";
+        return 'asc';
     }
 
     public static function getOptions()
@@ -30,7 +30,7 @@ enum SortByPublicationDateEnum: int
             [
                 'text' => 'Newest',
                 'value' => self::NEW_TO_OLD,
-            ]
+            ],
         ];
     }
 }

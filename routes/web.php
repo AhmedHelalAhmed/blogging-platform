@@ -17,13 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[WelcomeController::class,'__invoke'])
+Route::get('/', [WelcomeController::class, '__invoke'])
     ->name('welcome');
-Route::get('/dashboard',[DashboardController::class,'__invoke'])
+Route::get('/dashboard', [DashboardController::class, '__invoke'])
     ->middleware(['auth'])
     ->name('dashboard');
-Route::resource('posts',PostController::class)
-    ->only('store','create')
+Route::resource('posts', PostController::class)
+    ->only('store', 'create')
     ->middleware(['auth']);
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
