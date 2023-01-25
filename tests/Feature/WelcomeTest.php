@@ -126,6 +126,66 @@ class WelcomeTest extends TestCase
             );
     }
 
+    public function test_welcome_page_sort_by_publication_date_in_case_of_api_posts()
+    {
+        $url = route(self::WELCOME_PAGE_NAME);
+        $todayPost = Post::factory()->create([
+            'published_at' => Carbon::now(),
+        ]);
+        $yesterdayPost = Post::factory()->create([
+            'published_at' => Carbon::now()->subDay(),
+        ]);
+        $this->get($url.'?'.http_build_query([
+            'sort' => [
+                'published_at' => SortByPublicationDateEnum::NEW_TO_OLD->value,
+            ],
+        ]))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('posts')
+                ->has('posts.data.0', fn ($page) => $page
+                    ->has('title')
+                    ->has('description')
+                    ->has('published_at')
+                    ->where('title', $todayPost->title)
+                    ->where('description', $todayPost->description)
+                )
+                ->has('posts.data.1', fn ($page) => $page
+                    ->has('title')
+                    ->has('description')
+                    ->has('published_at')
+                    ->where('title', $yesterdayPost->title)
+                    ->where('description', $yesterdayPost->description)
+                )
+                ->has('posts.data', 2)
+            );
+
+        $this->get($url.'?'.http_build_query([
+            'sort' => [
+                'published_at' => SortByPublicationDateEnum::OLD_TO_NEW->value,
+            ],
+        ]))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page
+                ->has('posts')
+                ->has('posts.data.0', fn ($page) => $page
+                    ->has('title')
+                    ->has('description')
+                    ->has('published_at')
+                    ->where('title', $yesterdayPost->title)
+                    ->where('description', $yesterdayPost->description)
+                )
+                ->has('posts.data.1', fn ($page) => $page
+                    ->has('title')
+                    ->has('description')
+                    ->has('published_at')
+                    ->where('title', $todayPost->title)
+                    ->where('description', $todayPost->description)
+                )
+                ->has('posts.data', 2)
+            );
+    }
+
     public function test_welcome_page_sort_by_publication_date_with_pagination()
     {
         $url = route(self::WELCOME_PAGE_NAME);

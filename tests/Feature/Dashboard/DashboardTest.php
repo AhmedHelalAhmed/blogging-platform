@@ -5,6 +5,7 @@ namespace Tests\Feature\Dashboard;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -18,13 +19,18 @@ class DashboardTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_see_his_posts_in_dashboard()
+    public function test_user_can_see_his_posts_in_dashboard_new_posts_first_by_default()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
         $anotherUser = User::factory()->create();
         $postsCount = 2;
-        $expectedPosts = Post::factory($postsCount)->for($user)->create();
+        Post::factory($postsCount)->for($user)->create();
+        $expectedPosts = DB::table('posts')
+            ->select('title', 'description', 'published_at')
+            ->where('user_id', $user->id)
+            ->orderBy('published_at', 'desc')
+            ->get();
         Post::factory(1)->for($anotherUser)->create();
         $this->get(route(self::DASHBOARD_PAGE_NAME))
             ->assertOk()
@@ -33,15 +39,15 @@ class DashboardTest extends TestCase
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
-                    ->where('title', $expectedPosts[0]['title'])
-                    ->where('description', $expectedPosts[0]['description'])
+                    ->where('title', $expectedPosts[0]->title)
+                    ->where('description', $expectedPosts[0]->description)
                 )
                 ->has('posts.data.1', fn ($page) => $page
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
-                    ->where('title', $expectedPosts[1]['title'])
-                    ->where('description', $expectedPosts[1]['description'])
+                    ->where('title', $expectedPosts[1]->title)
+                    ->where('description', $expectedPosts[1]->description)
                 )
                 ->has('posts.data', $postsCount));
     }
@@ -51,11 +57,16 @@ class DashboardTest extends TestCase
      *
      * @return void
      */
-    public function test_user_can_see_his_posts_with_pagination()
+    public function test_user_can_see_his_posts_new_posts_first_by_default_with_pagination()
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $expectedPosts = Post::factory(12)->for($user)->create();
+        Post::factory(12)->for($user)->create();
+        $expectedPosts = DB::table('posts')
+            ->select('title', 'description', 'published_at')
+            ->where('user_id', $user->id)
+            ->orderBy('published_at', 'desc')
+            ->get();
         $this->get(route(self::DASHBOARD_PAGE_NAME))
             ->assertOk()
             ->assertInertia(fn ($page) => $page->has('posts')
@@ -63,15 +74,15 @@ class DashboardTest extends TestCase
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
-                    ->where('title', $expectedPosts[0]['title'])
-                    ->where('description', $expectedPosts[0]['description'])
+                    ->where('title', $expectedPosts[0]->title)
+                    ->where('description', $expectedPosts[0]->description)
                 )
                 ->has('posts.data.1', fn ($page) => $page
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
-                    ->where('title', $expectedPosts[1]['title'])
-                    ->where('description', $expectedPosts[1]['description'])
+                    ->where('title', $expectedPosts[1]->title)
+                    ->where('description', $expectedPosts[1]->description)
                 )
                 ->has('posts.data', Post::PAGE_SIZE));
         $this->get(route(self::DASHBOARD_PAGE_NAME).'?'.http_build_query([
