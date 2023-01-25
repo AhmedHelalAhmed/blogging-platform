@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\enums\DefaultMessageEnum;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 use TypeError;
 
@@ -52,9 +53,17 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e)
     {
+        // Add some custom Exception handling
         if ($e instanceof TypeError) {
+            Log::error('[Exception] '.$e->getMessage(),
+                [
+                    'trace' => $e->getTrace(),
+                    'Exception' => $e,
+                ]);
+
             return redirect('/')->with('error', DefaultMessageEnum::ERROR_MESSAGE);
         }
-        parent::render($request, $e);
+
+        return parent::render($request, $e);
     }
 }
