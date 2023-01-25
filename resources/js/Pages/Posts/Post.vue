@@ -10,7 +10,9 @@ defineProps(['title', 'description', 'publishedAt']);
                     {{ title }}
                 </h2>
                 <p class="break-words">{{ description }}</p>
-                <time class="text-sm font-bold text-gray-600" datetime="2022-02-24T00:00:00.000Z">{{ publishedAt }}</time>
+                <div class="text-right">
+                    <small class="font-bold text-gray-600">{{ publishedAt }}</small>
+                </div>
             </div>
         </div>
     </article>

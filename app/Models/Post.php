@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\enums\SortByPublicationDateEnum;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 class Post extends Model
 {
@@ -52,5 +54,17 @@ class Post extends Model
     public function scopeAuthor(Builder $query, int $authorId)
     {
         $query->where('user_id', $authorId);
+    }
+
+    /**
+     * Get the user's first name.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    protected function publishedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Carbon::parse($value)->diffForHumans(),
+        );
     }
 }
