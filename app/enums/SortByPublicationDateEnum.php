@@ -33,4 +33,12 @@ enum SortByPublicationDateEnum: int
             ],
         ];
     }
+
+    /**
+     * @return int
+     */
+    public static function getDefaultSort(): int
+    {
+        return self::NEW_TO_OLD->value;
+    }
 }

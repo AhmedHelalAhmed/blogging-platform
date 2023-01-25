@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Import;
+namespace Tests\Feature\Posts;
 
 use App\Models\Post;
 use App\Models\User;
@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
+// TODO cover testins insert external ids in external ids table
 class PostsImportTest extends TestCase
 {
     use LazilyRefreshDatabase;

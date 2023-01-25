@@ -74,4 +74,13 @@ class CreatePostTest extends TestCase
                 ]
             );
     }
+
+    public function test_post_store_success()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $this->post(route(self::STORE_POST_PAGE_NAME), Post::factory()->make()->toArray())
+            ->assertRedirect()
+            ->assertSessionHas('message');
+    }
 }

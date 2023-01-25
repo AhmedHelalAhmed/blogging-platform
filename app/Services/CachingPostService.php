@@ -67,7 +67,11 @@ class CachingPostService
      */
     public function setCacheKey(int $pageNumber, array $filters): void
     {
-        $this->cacheKey = self::POST_KEY_PREFIX.self::PAGE_KEY_PREFIX.$pageNumber.self::PUBLISHED_AT_SORT_KEY_PREFIX.($filters['sort']['published_at'] ?? SortByPublicationDateEnum::OLD_TO_NEW->value);
+        $this->cacheKey = self::POST_KEY_PREFIX.
+            self::PAGE_KEY_PREFIX.
+            $pageNumber.
+            self::PUBLISHED_AT_SORT_KEY_PREFIX.
+            Arr::get($filters, 'sort.published_at', SortByPublicationDateEnum::getDefaultSort());
     }
 
     /**
@@ -80,7 +84,11 @@ class CachingPostService
     {
         foreach (SortByPublicationDateEnum::cases() as $sortOption) {
             Cache::forget(
-                self::POST_KEY_PREFIX.self::PAGE_KEY_PREFIX.self::FIRST_PAGE.self::PUBLISHED_AT_SORT_KEY_PREFIX.$sortOption->value
+                self::POST_KEY_PREFIX.
+                self::PAGE_KEY_PREFIX.
+                self::FIRST_PAGE.
+                self::PUBLISHED_AT_SORT_KEY_PREFIX.
+                $sortOption->value
             );
         }
     }

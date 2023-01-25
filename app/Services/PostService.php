@@ -33,7 +33,7 @@ class PostService
             return $this->cachingPostService->getFromCache();
         }
         $posts = Post::select(['title', 'description', 'published_at'])
-            ->when(Arr::get($filters, 'sort.published_at', SortByPublicationDateEnum::NEW_TO_OLD->value), function ($query, $direction) {
+            ->when(Arr::get($filters, 'sort.published_at', SortByPublicationDateEnum::getDefaultSort()), function ($query, $direction) {
                 $query->sortByPublishedAt($direction);
             })
             ->when(Arr::get($filters, 'filter.authorId'), function ($query, $authorId) {
@@ -42,7 +42,9 @@ class PostService
             ->paginate(Post::PAGE_SIZE)
             ->withQueryString();
 
-        $this->cachingPostService->cache($posts);
+        if ($posts->isNotEmpty()) {
+            $this->cachingPostService->cache($posts);
+        }
 
         return $posts;
     }
