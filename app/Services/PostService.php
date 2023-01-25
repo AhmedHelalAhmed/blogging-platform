@@ -5,6 +5,7 @@ namespace App\Services;
 use App\enums\SortByPublicationDateEnum;
 use App\Models\Post;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
 
 class PostService
 {
@@ -32,13 +33,12 @@ class PostService
             return $this->cachingPostService->getFromCache();
         }
         $posts = Post::select(['title', 'description', 'published_at'])
-            ->when($filters['sort']['published_at'] ?? SortByPublicationDateEnum::OLD_TO_NEW->value, function ($query, $direction) {
+            ->when(Arr::get($filters, 'sort.published_at', SortByPublicationDateEnum::NEW_TO_OLD->value), function ($query, $direction) {
                 $query->sortByPublishedAt($direction);
             })
-            ->when($filters['filter']['authorId'] ?? SortByPublicationDateEnum::OLD_TO_NEW->value, function ($query, $authorId) {
+            ->when(Arr::get($filters, 'filter.authorId'), function ($query, $authorId) {
                 $query->author($authorId);
             })
-            ->orderBy('published_at', 'desc')
             ->paginate(Post::PAGE_SIZE)
             ->withQueryString();
 

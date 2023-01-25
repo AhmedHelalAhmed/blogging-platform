@@ -4,8 +4,8 @@ namespace App\enums;
 
 enum SortByPublicationDateEnum: int
 {
-    case OLD_TO_NEW = 0;
-    case NEW_TO_OLD = 1;
+    case OLD_TO_NEW = 1;
+    case NEW_TO_OLD = 2;
 
     /**
      * @param  int  $value
