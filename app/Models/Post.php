@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\enums\SortByPublicationDateEnum;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Stevebauman\Purify\Facades\Purify;
 
@@ -89,5 +91,22 @@ class Post extends Model
             get: fn ($value) => Purify::clean($value),
             set: fn ($value) => strip_tags(htmlspecialchars_decode(Purify::clean($value))),
         );
+    }
+
+    /**
+     * @param  array  $filters
+     * @return mixed
+     */
+    public static function getAll(array $filters): LengthAwarePaginator
+    {
+        return Post::query()->select(['title', 'description', 'published_at'])
+            ->when(Arr::get($filters, 'sort.published_at', SortByPublicationDateEnum::getDefaultSort()), function ($query, $direction) {
+                $query->sortByPublishedAt($direction);
+            })
+            ->when(Arr::get($filters, 'filter.authorId'), function ($query, $authorId) {
+                $query->author($authorId);
+            })
+            ->paginate(Post::PAGE_SIZE)
+            ->withQueryString();
     }
 }
