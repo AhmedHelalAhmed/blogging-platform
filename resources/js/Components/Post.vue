@@ -9,7 +9,7 @@ defineProps(['title', 'description', 'publishedAt']);
                 <h2 class="mb-3 uppercase border-black-600 font-bold shadow-sm pt-2 pb-2">
                     {{ title }}
                 </h2>
-                <p class="break-words">{{ description }}</p>
+                <pre class="break-words whitespace-pre">{{ description }}</pre>
                 <div class="text-right">
                     <small class="font-bold text-gray-600">{{ publishedAt }}</small>
                 </div>
