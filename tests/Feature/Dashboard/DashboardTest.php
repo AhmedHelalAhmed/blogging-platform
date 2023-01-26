@@ -36,15 +36,15 @@ class DashboardTest extends TestCase
         Post::factory(1)->for($anotherUser)->create();
         $this->get(route(self::DASHBOARD_PAGE_NAME))
             ->assertOk()
-            ->assertInertia(fn($page) => $page->has('posts')
-                ->has('posts.data.0', fn($page) => $page
+            ->assertInertia(fn ($page) => $page->has('posts')
+                ->has('posts.data.0', fn ($page) => $page
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
                     ->where('title', $expectedPosts[0]->title)
                     ->where('description', Str::limit(TextInputFilterService::displayFilter($expectedPosts[0]->description), Post::LIMIT_LENGTH_FOR_DESCRIPTION))
                 )
-                ->has('posts.data.1', fn($page) => $page
+                ->has('posts.data.1', fn ($page) => $page
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
@@ -71,15 +71,15 @@ class DashboardTest extends TestCase
             ->get();
         $this->get(route(self::DASHBOARD_PAGE_NAME))
             ->assertOk()
-            ->assertInertia(fn($page) => $page->has('posts')
-                ->has('posts.data.0', fn($page) => $page
+            ->assertInertia(fn ($page) => $page->has('posts')
+                ->has('posts.data.0', fn ($page) => $page
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
                     ->where('title', $expectedPosts[0]->title)
                     ->where('description', Str::limit(TextInputFilterService::displayFilter($expectedPosts[0]->description), Post::LIMIT_LENGTH_FOR_DESCRIPTION))
                 )
-                ->has('posts.data.1', fn($page) => $page
+                ->has('posts.data.1', fn ($page) => $page
                     ->has('title')
                     ->has('description')
                     ->has('published_at')
@@ -87,11 +87,11 @@ class DashboardTest extends TestCase
                     ->where('description', Str::limit(TextInputFilterService::displayFilter($expectedPosts[1]->description), Post::LIMIT_LENGTH_FOR_DESCRIPTION))
                 )
                 ->has('posts.data', Post::PAGE_SIZE));
-        $this->get(route(self::DASHBOARD_PAGE_NAME) . '?' . http_build_query([
-                'page' => 2,
-            ]))
+        $this->get(route(self::DASHBOARD_PAGE_NAME).'?'.http_build_query([
+            'page' => 2,
+        ]))
             ->assertOk()
-            ->assertInertia(fn($page) => $page->has('posts')
+            ->assertInertia(fn ($page) => $page->has('posts')
                 ->has('posts.data', 12 - Post::PAGE_SIZE));
     }
 

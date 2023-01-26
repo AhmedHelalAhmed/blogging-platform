@@ -30,7 +30,7 @@ class WelcomeController extends Controller
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
             'posts' => $this->service->getAll($request->validated(), $request->input('page', 1)),
-            'sortByPublicationDate' => $request->input('sort.published_at'),
+            'sortByPublicationDate' => intval($request->input('sort.published_at', SortByPublicationDateEnum::getDefaultSort())),
             'optionsForSort' => SortByPublicationDateEnum::getOptions(),
         ]);
     }
