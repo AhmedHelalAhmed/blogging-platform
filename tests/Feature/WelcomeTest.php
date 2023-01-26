@@ -23,7 +23,7 @@ class WelcomeTest extends TestCase
     {
         $this->get(route(self::WELCOME_PAGE_NAME))
             ->assertOk()
-            ->assertInertia(fn ($page) => $page->component('Welcome'));
+            ->assertInertia(fn ($page) => $page->component('Welcome')->has('optionsForSort'));
     }
 
     /**
