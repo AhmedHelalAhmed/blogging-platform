@@ -81,6 +81,76 @@ class PostsImportTest extends TestCase
         $this->assertEquals(count(self::SAMPLE_DATA_FROM_API_OF_FEED), Post::count());
     }
 
+    public function test_import_posts_validation_no_id_for_external_post()
+    {
+        $this->assertEquals(0, Post::count());
+        Http::fake([
+            config('app.feed') => Http::response(['articles' => [
+                [
+                    'title' => 'Tesla vs. the S&P 500: Which Is the Better First Investment?',
+                    'description' => 'Choose your first investment with the goal of protecting your money and your investing confidence.',
+                    'publishedAt' => '2022-08-31T09:52:00Z',
+                ],
+
+            ]]),
+        ]);
+        $this->simulateSchedulerRun();
+        $this->assertEquals(0, Post::count());
+    }
+
+    public function test_import_posts_validation_title_validation()
+    {
+        $this->assertEquals(0, Post::count());
+        Http::fake([
+            config('app.feed') => Http::response(['articles' => [
+                [
+                    'id' => 1,
+                    'title' => 'a',
+                    'description' => 'Choose your first investment with the goal of protecting your money and your investing confidence.',
+                    'publishedAt' => '2022-08-31T09:52:00Z',
+                ],
+
+            ]]),
+        ]);
+        $this->simulateSchedulerRun();
+        $this->assertEquals(0, Post::count());
+    }
+
+    public function test_import_posts_description_validation()
+    {
+        $this->assertEquals(0, Post::count());
+        Http::fake([
+            config('app.feed') => Http::response(['articles' => [
+                [
+                    'id' => 1,
+                    'title' => 'Tesla vs. the S&P 500: Which Is the Better First Investment?',
+                    'publishedAt' => '2022-08-31T09:52:00Z',
+                ],
+
+            ]]),
+        ]);
+        $this->simulateSchedulerRun();
+        $this->assertEquals(0, Post::count());
+    }
+
+    public function test_import_posts_published_at_validation()
+    {
+        $this->assertEquals(0, Post::count());
+        Http::fake([
+            config('app.feed') => Http::response(['articles' => [
+                [
+                    'id' => 1,
+                    'title' => 'Tesla vs. the S&P 500: Which Is the Better First Investment?',
+                    'description' => 'Choose your first investment with the goal of protecting your money and your investing confidence.',
+                    'publishedAt' => null,
+                ],
+
+            ]]),
+        ]);
+        $this->simulateSchedulerRun();
+        $this->assertEquals(0, Post::count());
+    }
+
     private function simulateSchedulerRun()
     {
         (new PostImportingService)->__invoke();
