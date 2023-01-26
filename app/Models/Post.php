@@ -91,7 +91,7 @@ class Post extends Model
     protected function description(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Str::limit(TextInputFilterService::displayFilter($value), self::LIMIT_LENGTH_FOR_DESCRIPTION, '...'),
+            get: fn ($value) => Str::limit(TextInputFilterService::displayFilter($value), self::LIMIT_LENGTH_FOR_DESCRIPTION),
             set: fn ($value) => TextInputFilterService::storeFilter($value),
         );
     }
