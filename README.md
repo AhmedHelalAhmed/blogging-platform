@@ -71,3 +71,8 @@
 
 ## Links of local dev for built-in server
 - [blogging-platform](http://localhost:8000)
+
+## Note:
+- If you don't have redis installed and don't use docker you can change the key value in .env like that this just for development not production
+``` CACHE_DRIVER=file ```
+- for monitoring the web app we can integrate with [sentry](https://sentry.io/welcome/) 
