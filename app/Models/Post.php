@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\enums\SortByPublicationDateEnum;
+use App\Services\TextInputFilterService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -11,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
-use Stevebauman\Purify\Facades\Purify;
 
 class Post extends Model
 {
@@ -77,8 +77,8 @@ class Post extends Model
     protected function title(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Purify::clean($value),
-            set: fn ($value) => strip_tags(htmlspecialchars_decode(Purify::clean($value))),
+            get: fn ($value) => TextInputFilterService::displayFilter($value),
+            set: fn ($value) => TextInputFilterService::storeFilter($value),
         );
     }
 
@@ -88,8 +88,8 @@ class Post extends Model
     protected function description(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Purify::clean($value),
-            set: fn ($value) => strip_tags(htmlspecialchars_decode(Purify::clean($value))),
+            get: fn ($value) => TextInputFilterService::displayFilter($value),
+            set: fn ($value) => TextInputFilterService::storeFilter($value),
         );
     }
 

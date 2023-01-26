@@ -3,9 +3,9 @@
 namespace App\Validators;
 
 use App\Http\Requests\StorePostRequest;
+use App\Services\TextInputFilterService;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
-use Stevebauman\Purify\Facades\Purify;
 
 class PostValidator
 {
@@ -34,8 +34,8 @@ class PostValidator
     protected function prepareForValidation(array $attributes): array
     {
         return array_merge($attributes, [
-            'title' => Purify::clean(Arr::get($attributes, 'title', '')),
-            'description' => Purify::clean(Arr::get($attributes, 'description', '')),
+            'title' => TextInputFilterService::storeFilter(Arr::get($attributes, 'title', '')),
+            'description' => TextInputFilterService::storeFilter(Arr::get($attributes, 'description', '')),
         ]);
     }
 }

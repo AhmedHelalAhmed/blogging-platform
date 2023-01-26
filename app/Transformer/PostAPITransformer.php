@@ -3,17 +3,17 @@
 namespace App\Transformer;
 
 use App\Models\User;
+use App\Services\TextInputFilterService;
 use Carbon\Carbon;
-use Stevebauman\Purify\Facades\Purify;
 
 class PostAPITransformer
 {
     public static function transform($post)
     {
         return [
-            'title' => Purify::clean($post['title']),
-            'description' => strip_tags(htmlspecialchars_decode(Purify::clean($post['description']))),
-            'published_at' => strip_tags(htmlspecialchars_decode(Carbon::parse($post['publishedAt']))),
+            'title' => TextInputFilterService::storeFilter($post['title']),
+            'description' => TextInputFilterService::storeFilter($post['description']),
+            'published_at' => Carbon::parse($post['publishedAt']),
             'user_id' => User::ADMIN_USER_ID,
         ];
     }

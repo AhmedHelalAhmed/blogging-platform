@@ -5,10 +5,10 @@ namespace Tests\Feature\Posts;
 use App\Models\Post;
 use App\Models\User;
 use App\Services\PostImportingService;
+use App\Services\TextInputFilterService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Http;
-use Stevebauman\Purify\Facades\Purify;
 use Tests\TestCase;
 
 class PostsImportTest extends TestCase
@@ -44,8 +44,8 @@ class PostsImportTest extends TestCase
         $this->simulateSchedulerRun();
         foreach (self::SAMPLE_DATA_FROM_API_OF_FEED as $post) {
             $this->assertDatabaseHas('posts', [
-                'title' => Purify::clean($post['title']),
-                'description' => Purify::clean($post['description']),
+                'title' => TextInputFilterService::storeFilter($post['title']),
+                'description' => TextInputFilterService::storeFilter($post['description']),
                 'published_at' => Carbon::parse($post['publishedAt']),
                 'user_id' => User::ADMIN_USER_ID,
             ]);
@@ -72,8 +72,8 @@ class PostsImportTest extends TestCase
         $this->simulateSchedulerRun();
         foreach (self::SAMPLE_DATA_FROM_API_OF_FEED as $post) {
             $this->assertDatabaseHas('posts', [
-                'title' => Purify::clean($post['title']),
-                'description' => Purify::clean($post['description']),
+                'title' => TextInputFilterService::storeFilter($post['title']),
+                'description' => TextInputFilterService::storeFilter($post['description']),
                 'published_at' => Carbon::parse($post['publishedAt']),
             ]);
         }
