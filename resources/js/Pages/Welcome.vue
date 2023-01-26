@@ -1,6 +1,6 @@
 <script setup>
 import {Head, Link} from '@inertiajs/vue3';
-import Post from '@/Pages/Posts/Post.vue';
+import Post from '@/Components/Post.vue';
 import Pagination from '@/Components/Pagination.vue';
 
 defineProps({

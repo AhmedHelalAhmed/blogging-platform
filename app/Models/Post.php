@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use Stevebauman\Purify\Facades\Purify;
 
 class Post extends Model
 {
@@ -65,6 +66,28 @@ class Post extends Model
     {
         return Attribute::make(
             get: fn ($value) => Carbon::parse($value)->diffForHumans(),
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function title(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Purify::clean($value),
+            set: fn ($value) => strip_tags(htmlspecialchars_decode(Purify::clean($value))),
+        );
+    }
+
+    /**
+     * @return Attribute
+     */
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Purify::clean($value),
+            set: fn ($value) => strip_tags(htmlspecialchars_decode(Purify::clean($value))),
         );
     }
 }

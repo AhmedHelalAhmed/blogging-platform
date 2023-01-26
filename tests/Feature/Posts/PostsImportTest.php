@@ -8,9 +8,9 @@ use App\Services\PostImportingService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Stevebauman\Purify\Facades\Purify;
 use Tests\TestCase;
 
-// TODO cover testins insert external ids in external ids table
 class PostsImportTest extends TestCase
 {
     use LazilyRefreshDatabase;
@@ -44,11 +44,12 @@ class PostsImportTest extends TestCase
         $this->simulateSchedulerRun();
         foreach (self::SAMPLE_DATA_FROM_API_OF_FEED as $post) {
             $this->assertDatabaseHas('posts', [
-                'title' => $post['title'],
-                'description' => $post['description'],
+                'title' => Purify::clean($post['title']),
+                'description' => Purify::clean($post['description']),
                 'published_at' => Carbon::parse($post['publishedAt']),
                 'user_id' => User::ADMIN_USER_ID,
             ]);
+            $this->assertDatabaseHas('external_posts_ids', ['external_id' => $post['id']]);
         }
 
         $this->assertEquals(count(self::SAMPLE_DATA_FROM_API_OF_FEED), Post::count());
@@ -71,8 +72,8 @@ class PostsImportTest extends TestCase
         $this->simulateSchedulerRun();
         foreach (self::SAMPLE_DATA_FROM_API_OF_FEED as $post) {
             $this->assertDatabaseHas('posts', [
-                'title' => $post['title'],
-                'description' => $post['description'],
+                'title' => Purify::clean($post['title']),
+                'description' => Purify::clean($post['description']),
                 'published_at' => Carbon::parse($post['publishedAt']),
             ]);
         }

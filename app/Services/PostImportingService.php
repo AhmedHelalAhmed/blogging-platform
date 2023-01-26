@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Models\ExternalPostsIds;
 use App\Models\Post;
 use App\Transformer\PostAPITransformer;
+use App\Validators\PostValidator;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 /**
  * To import posts from API every hour
@@ -24,18 +26,31 @@ class PostImportingService
         if ($posts->isEmpty()) {
             return;
         }
-        $existsPosts = ExternalPostsIds::getByIds($posts->pluck('id'));
-        $newPosts = $posts->filter(function ($post) use ($existsPosts) {
-            return ! in_array($post['id'], $existsPosts);
+
+        $posts = $posts->filter(function ($post) {
+            try {
+                app(PostValidator::class)->validate($post);
+
+                return true;
+            } catch (ValidationException $exception) {
+                Log::error('[import-posts-api] Error in importing: '.$exception->getMessage(), [
+                    'exception' => $exception,
+                    'post' => $post,
+                ]);
+
+                return false;
+            }
         });
 
+        $existsPosts = ExternalPostsIds::getByIds($posts->pluck('id'));
+        $newPosts = $posts->filter(fn ($post) => ! in_array($post['id'], $existsPosts));
         if ($newPosts->isNotEmpty()) {
-            Post::insert($newPosts->map(function ($post) {
-                return PostAPITransformer::transform($post);
-            })->toArray());
-            ExternalPostsIds::insert($newPosts->map(function ($post) {
-                return ['external_id' => $post['id']];
-            })->toArray());
+            Post::insert(
+                $newPosts->map(function ($post) {
+                    return PostAPITransformer::transform($post);
+                })->toArray()
+            );
+            ExternalPostsIds::insert($newPosts->map(fn ($post) => ['external_id' => $post['id']])->toArray());
 
             // If we have new posts we need to invalidate the cache
             app(CachingPostService::class)->invalidateFirstPageInCache();
@@ -53,12 +68,20 @@ class PostImportingService
      */
     public function getFeeds(): array
     {
-        $response = Http::get(config('app.feed'));
-        if ($response->failed()) {
-            Log::error('Can not get feeds from external api', ['response' => $response]);
-            throw new \Exception('error in external feed api');
+        try {
+            $response = Http::get(config('app.feed'));
+            if ($response->failed()) {
+                Log::error('[import-posts-api] Can not get feeds from external api', ['response' => $response]);
+                throw new \Exception('error in external feed api');
+            }
+
+            return $response->json('articles');
+        } catch (\Exception $exception) {
+            Log::error('[import-posts-api] Failed to get posts external api'.$exception->getMessage(), [
+                'exception' => $exception,
+            ]);
         }
 
-        return $response->json('articles');
+        return [];
     }
 }
