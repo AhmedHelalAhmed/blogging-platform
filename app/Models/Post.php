@@ -12,10 +12,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
     const PAGE_SIZE = 10;
+
+    const LIMIT_LENGTH_FOR_DESCRIPTION = 300;
 
     use HasFactory;
 
@@ -88,7 +91,7 @@ class Post extends Model
     protected function description(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => TextInputFilterService::displayFilter($value),
+            get: fn ($value) => Str::limit(TextInputFilterService::displayFilter($value), self::LIMIT_LENGTH_FOR_DESCRIPTION, '...'),
             set: fn ($value) => TextInputFilterService::storeFilter($value),
         );
     }
