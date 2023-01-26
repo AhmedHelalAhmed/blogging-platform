@@ -47,7 +47,10 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->reportable(function (Throwable $e) {
-            //
+            // TODO change local to production when deploy
+            if (app()->environment('local') && app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
         });
     }
 

@@ -37,6 +37,10 @@ class PostImportingService
                     'exception' => $exception,
                     'post' => $post,
                 ]);
+                // TODO change local to production when deploy
+                if (app()->environment('local')) {
+                    app('sentry')->captureException($exception);
+                }
 
                 return false;
             }
@@ -77,6 +81,10 @@ class PostImportingService
 
             return $response->json('articles');
         } catch (\Exception $exception) {
+            // TODO change local to production when deploy
+            if (app()->environment('local')) {
+                app('sentry')->captureException($exception);
+            }
             Log::error('[import-posts-api] Failed to get posts external api'.$exception->getMessage(), [
                 'exception' => $exception,
             ]);

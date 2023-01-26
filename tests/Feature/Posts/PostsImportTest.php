@@ -9,6 +9,7 @@ use App\Services\TextInputFilterService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class PostsImportTest extends TestCase
@@ -83,6 +84,7 @@ class PostsImportTest extends TestCase
 
     public function test_import_posts_validation_no_id_for_external_post()
     {
+        Log::shouldReceive('error')->once();
         $this->assertEquals(0, Post::count());
         Http::fake([
             config('app.feed') => Http::response(['articles' => [
@@ -100,6 +102,8 @@ class PostsImportTest extends TestCase
 
     public function test_import_posts_validation_title_validation()
     {
+        Log::shouldReceive('error')->once();
+
         $this->assertEquals(0, Post::count());
         Http::fake([
             config('app.feed') => Http::response(['articles' => [
@@ -118,6 +122,8 @@ class PostsImportTest extends TestCase
 
     public function test_import_posts_description_validation()
     {
+        Log::shouldReceive('error')->once();
+
         $this->assertEquals(0, Post::count());
         Http::fake([
             config('app.feed') => Http::response(['articles' => [
@@ -135,6 +141,8 @@ class PostsImportTest extends TestCase
 
     public function test_import_posts_published_at_validation()
     {
+        Log::shouldReceive('error')->once();
+
         $this->assertEquals(0, Post::count());
         Http::fake([
             config('app.feed') => Http::response(['articles' => [

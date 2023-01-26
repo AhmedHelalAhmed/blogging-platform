@@ -9,17 +9,16 @@
 - ``` docker-compose up ```
 - Inside the web container execute the following commands:
 #### To go inside the container run ``` docker exec -it blogging-platform_web bash ``` (this line only for docker) 
-### Change the value of UID in .env User id number in ubuntu in the terminal just write id and get uid value in case of using docker
+### Change the value of UID in .env User id number in ubuntu in the terminal just write id and get uid value in case of using docker this is very important step to avoid permission issue
 - ```composer install```
-- ```php artiasn key:generate```
-- ```php artiasn migrate```
-- ```php artiasn db:seed```
+- ```php artisan key:generate```
+- ```php artisan migrate --seed```
 - ```npm install```
 - ```npm run build```
 - ``` php artisan inertia:start-ssr ``` For Server-side Rendering and keep it running
 ### The same for local development but you need to run
-- ``` php artisan schedule:work ``` For cron Job to work and keep it running
 - ``` php artisan serve ``` For php webserver to start
+- ``` php artisan schedule:work ``` For cron Job to work and keep it running
 ### To run tests
 - ```php artisan test ```
 ### To run code Fixer
@@ -75,4 +74,4 @@
 ## Note:
 - If you don't have redis installed and don't use docker you can change the key value in .env like that this just for development not production
 ``` CACHE_DRIVER=file ```
-- for monitoring the web app we can integrate with [sentry](https://sentry.io/welcome/) 
+- For monitoring I integrate with [sentry](https://sentry.io/welcome/) so you need to change SENTRY_LARAVEL_DSN in .env with your one
